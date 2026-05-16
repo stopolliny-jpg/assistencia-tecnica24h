@@ -161,19 +161,19 @@ export function QuoteForm({ config }: QuoteFormProps) {
   }
 
   return (
-    <section id="orcamento" className="py-24 lg:py-32 bg-black relative">
+    <section id="orcamento" className="py-24 lg:py-32 bg-black relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-apple-blue/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-6 relative z-10">
-        <div className="mb-16">
-          <h2 className="section-title">Solicite seu orçamento agora.</h2>
+        <div className="mb-16 motion-reveal">
+          <h2 className="section-title motion-title">Solicite seu orçamento agora.</h2>
           <p className="section-subtitle">Escolha um horário disponível e fale direto com um especialista.</p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="glass-card p-8 md:p-12 space-y-8"
+          className="glass-card p-8 md:p-12 space-y-8 motion-form"
         >
           {/* Personal info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

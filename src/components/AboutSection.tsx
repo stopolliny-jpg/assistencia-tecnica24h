@@ -19,7 +19,7 @@ export function AboutSection({ config }: AboutSectionProps) {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           
-          <div className="relative group">
+          <div className="relative group motion-reveal">
             <div className="absolute -inset-4 bg-apple-blue/20 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
             <div className="relative rounded-3xl overflow-hidden aspect-square md:aspect-video lg:aspect-square bg-zinc-900 border border-white/10">
                {/* Premium placeholder for a real lab photo */}
@@ -36,20 +36,20 @@ export function AboutSection({ config }: AboutSectionProps) {
           </div>
 
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">Autoridade em conserto Apple no <span className="text-apple-neon">Capão Redondo</span>.</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 motion-title">Autoridade em conserto Apple no <span className="text-apple-neon">Capão Redondo</span>.</h2>
             
-            <p className="text-xl text-white/60 leading-relaxed mb-10">
+            <p className="text-xl text-white/60 leading-relaxed mb-10 motion-reveal">
               A Assistência Apple 24H nasceu da certeza de que ficar sem iPhone não é opção. 
               Por isso, oferecemos atendimento rápido, diagnóstico transparente, peças de qualidade 
               e suporte direto pelo WhatsApp. Buscamos e entregamos seu aparelho para que você resolva 
               tudo com praticidade, segurança e confiança.
             </p>
 
-            <div className="space-y-6">
+            <div className="space-y-6 motion-card-group">
               {highlights.map((h) => {
                 const Icon = h.icon;
                 return (
-                  <div key={h.label} className="flex items-center gap-4 group">
+                  <div key={h.label} className="flex items-center gap-4 group motion-card">
                     <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-apple-neon group-hover:bg-apple-blue transition-colors">
                       <Icon size={20} />
                     </div>

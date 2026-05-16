@@ -10,9 +10,11 @@ import { Footer } from './components/Footer';
 import { FloatingWhatsAppButton } from './components/FloatingWhatsAppButton';
 import { useSiteConfig } from './hooks/useSiteConfig';
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
+import { useScrollReveal } from './hooks/useScrollReveal';
 
 function App() {
   const { config, loading } = useSiteConfig();
+  useScrollReveal();
 
   if (loading) {
     return (

@@ -21,8 +21,9 @@ export function Header({ config }: HeaderProps) {
     { name: 'Início', href: '#' },
     { name: 'Serviços', href: '#servicos' },
     { name: 'Como funciona', href: '#como-funciona' },
-    { name: 'Feedback', href: '#feedback' },
+    { name: 'Feedback dos Clientes', href: '#feedback' },
     { name: 'Sobre', href: '#sobre' },
+    { name: 'Orçamento', href: '#orcamento' },
   ];
 
   return (
@@ -59,7 +60,7 @@ export function Header({ config }: HeaderProps) {
         <div className="hidden lg:block">
           <a href={`https://wa.me/${config.whatsapp}`} target="_blank" rel="noreferrer">
             <Button size="sm" variant="secondary">
-              WhatsApp
+              Chamar no WhatsApp
             </Button>
           </a>
         </div>

@@ -17,26 +17,26 @@ export function Hero({ config }: HeroProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="flex flex-col items-center text-center animate-fade-in-up">
+        <div className="flex flex-col items-center text-center motion-card-group">
           
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-sm font-semibold mb-10 backdrop-blur-xl shadow-2xl">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-sm font-semibold mb-10 backdrop-blur-xl shadow-2xl motion-card">
             <span className="flex h-2 w-2 rounded-full bg-apple-neon animate-pulse" />
             <Apple size={14} className="text-white" />
             Especialistas em Hardware Apple
           </div>
 
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-8 leading-[0.9] text-white">
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-8 leading-[0.9] text-white motion-title">
             Seu iPhone <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/40">novo de novo.</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto mb-14 leading-relaxed font-medium">
+          <p className="text-xl md:text-2xl text-white/50 max-w-3xl mx-auto mb-14 leading-relaxed font-medium motion-reveal">
             Reparos especializados em iPhones com busca e entrega em toda a região do Capão Redondo. 
             <span className="text-white/80"> Diagnóstico técnico transparente e {config.warranty}.</span>
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-24 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-24 w-full sm:w-auto motion-card">
             <a href="#orcamento" className="w-full sm:w-auto">
               <Button size="lg" className="w-full sm:w-auto group">
                 Solicitar Orçamento
@@ -52,8 +52,8 @@ export function Hero({ config }: HeroProps) {
           </div>
 
           {/* Trust Badges */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-20">
-            <div className="flex flex-col items-center gap-4 group">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-20 motion-card-group">
+            <div className="flex flex-col items-center gap-4 group motion-card">
               <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-apple-neon group-hover:scale-110 transition-transform duration-500">
                 <Zap size={28} />
               </div>
@@ -63,7 +63,7 @@ export function Hero({ config }: HeroProps) {
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4 group">
+            <div className="flex flex-col items-center gap-4 group motion-card">
               <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-apple-neon group-hover:scale-110 transition-transform duration-500">
                 <ShieldCheck size={28} />
               </div>
@@ -73,7 +73,7 @@ export function Hero({ config }: HeroProps) {
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4 group">
+            <div className="flex flex-col items-center gap-4 group motion-card">
               <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-apple-neon group-hover:scale-110 transition-transform duration-500">
                 <Truck size={28} />
               </div>
@@ -83,7 +83,7 @@ export function Hero({ config }: HeroProps) {
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4 group">
+            <div className="flex flex-col items-center gap-4 group motion-card">
               <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-apple-neon group-hover:scale-110 transition-transform duration-500">
                 <Apple size={28} />
               </div>

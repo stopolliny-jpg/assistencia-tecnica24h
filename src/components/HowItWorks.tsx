@@ -2,23 +2,23 @@ import { Calendar, Clock, Smartphone, CheckCircle } from 'lucide-react';
 
 const steps = [
   {
-    title: 'Escolha um horário',
-    description: 'Selecione uma data ou fale conosco direto pelo WhatsApp.',
+    title: 'Escolha uma data ou chame no WhatsApp',
+    description: 'Você escolhe uma data ou chama no WhatsApp para iniciar seu atendimento.',
     icon: Calendar,
   },
   {
-    title: 'Verificamos a agenda',
-    description: 'O sistema mostra os horários disponíveis em tempo real.',
+    title: 'O sistema mostra os horários',
+    description: 'O sistema mostra os horários disponíveis em tempo real na nossa agenda.',
     icon: Clock,
   },
   {
-    title: 'Preencha os dados',
-    description: 'Informe o modelo e o problema para agilizar o diagnóstico.',
+    title: 'Preencha os dados do aparelho',
+    description: 'Você preenche os dados do aparelho e descreve o sintoma para o orçamento.',
     icon: Smartphone,
   },
   {
-    title: 'Reparo garantido',
-    description: 'Confirmamos o atendimento e devolvemos seu iPhone pronto.',
+    title: 'Reparo com garantia',
+    description: 'A equipe confirma o atendimento e realiza o reparo com garantia de 90 dias.',
     icon: CheckCircle,
   },
 ];
@@ -30,16 +30,16 @@ export function HowItWorks() {
       <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent z-0" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="mb-20">
-          <h2 className="section-title text-gradient">Como funciona o atendimento.</h2>
+        <div className="mb-20 motion-reveal">
+          <h2 className="section-title text-gradient motion-title">Como funciona o atendimento.</h2>
           <p className="section-subtitle">Praticidade e rapidez em todas as etapas do processo.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 motion-card-group">
           {steps.map((step, idx) => {
             const Icon = step.icon;
             return (
-              <div key={step.title} className="relative group text-center lg:text-left">
+              <div key={step.title} className="relative group text-center lg:text-left motion-card">
                 <div className="inline-flex w-16 h-16 rounded-3xl bg-white/5 border border-white/10 items-center justify-center text-apple-neon mb-6 relative z-10 group-hover:shadow-[0_0_30px_rgba(0,212,255,0.2)] transition-all">
                   <Icon size={32} />
                   <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-apple-blue text-white text-xs font-bold flex items-center justify-center border-4 border-[#050505]">

@@ -19,21 +19,21 @@ export function FeedbackSection() {
   return (
     <section id="feedback" className="py-24 lg:py-32 bg-black relative">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-20">
-          <h2 className="section-title">Feedback dos Clientes</h2>
+        <div className="mb-20 motion-reveal">
+          <h2 className="section-title motion-title">Feedback dos Clientes</h2>
           <p className="section-subtitle">O que dizem sobre nossa agilidade e transparência.</p>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 motion-card-group">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="glass-card h-[400px] animate-shimmer bg-gradient-to-r from-white/5 via-white/10 to-white/5 bg-[length:200%_100%]" />
+              <div key={i} className="glass-card h-[400px] animate-shimmer bg-gradient-to-r from-white/5 via-white/10 to-white/5 bg-[length:200%_100%] motion-card" />
             ))}
           </div>
         ) : feedbacks.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 motion-card-group">
             {feedbacks.map((fb) => (
-              <div key={fb._id} className="glass-card overflow-hidden group">
+              <div key={fb._id} className="glass-card glass-card-hover overflow-hidden group motion-card">
                 <div className="aspect-[9/16] relative bg-zinc-900 flex items-center justify-center">
                   {fb.thumbnailUrl ? (
                     <img 
@@ -70,7 +70,7 @@ export function FeedbackSection() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 glass-card">
+          <div className="text-center py-20 glass-card motion-reveal">
             <p className="text-white/40 italic">Em breve, avaliação em vídeo.</p>
           </div>
         )}
