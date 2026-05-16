@@ -17,7 +17,7 @@ export const createQuote = async (req: Request, res: Response) => {
     whatsapp: quote.whatsapp,
     deviceModel: quote.deviceModel,
     problemType: quote.problemType,
-    description: quote.description,
+    description: quote.description || undefined,
     date: quote.preferredDate || undefined,
     startTime: quote.preferredTime || undefined
   });
