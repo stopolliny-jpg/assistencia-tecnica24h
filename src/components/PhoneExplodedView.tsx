@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function PhoneExplodedView() {
   return (
     <div className="relative w-full max-w-[300px] md:max-w-[400px] aspect-[1/2] mx-auto">

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Calendar, Clock, Smartphone, CheckCircle } from 'lucide-react';
 
 const steps = [

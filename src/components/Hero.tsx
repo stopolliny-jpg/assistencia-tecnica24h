@@ -1,6 +1,5 @@
-import React from 'react';
 import { Button } from './ui/Button';
-import { ShieldCheck, Zap, Truck, MessageCircle } from 'lucide-react';
+import { ShieldCheck, Zap, Truck, MessageCircle, Apple } from 'lucide-react';
 import type { SiteConfig } from '../types';
 
 interface HeroProps {

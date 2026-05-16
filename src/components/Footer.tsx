@@ -1,4 +1,3 @@
-import React from 'react';
 import { Apple, Instagram, MessageCircle, MapPin, Clock } from 'lucide-react';
 import type { SiteConfig } from '../types';
 

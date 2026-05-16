@@ -1,5 +1,4 @@
-import React from 'react';
-import { Apple, Users, ShieldCheck, Clock, Truck, CheckCircle2 } from 'lucide-react';
+import { Apple, Users, ShieldCheck, Truck, CheckCircle2 } from 'lucide-react';
 import type { SiteConfig } from '../types';
 
 interface AboutSectionProps {
