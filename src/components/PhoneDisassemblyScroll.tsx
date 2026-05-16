@@ -1,9 +1,59 @@
 import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { PhoneExplodedView } from './PhoneExplodedView';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const STAGES = [
+  {
+    title: "Diagnóstico rápido para o seu iPhone.",
+    description: "Atendimento especializado com avaliação transparente e precisa.",
+    // Coordinates: Top Left
+    pos: '0% 0%',
+  },
+  {
+    title: "Abertura técnica com cuidado.",
+    description: "Equipamentos de precisão para garantir a integridade dos selos internos.",
+    // Coordinates: Top Center
+    pos: '50% 0%',
+  },
+  {
+    title: "Inspeção de componentes.",
+    description: "Análise profunda de cada conector e barramento de dados.",
+    // Coordinates: Top Right
+    pos: '100% 0%',
+  },
+  {
+    title: "Troca de bateria segura.",
+    description: "Restauração completa da autonomia com células de alta densidade.",
+    // Coordinates: Mid Left
+    pos: '0% 48%',
+  },
+  {
+    title: "Análise da Placa Lógica.",
+    description: "Reparos em nível de componente e micro-soldagem avançada.",
+    // Coordinates: Mid Center
+    pos: '35% 48%',
+  },
+  {
+    title: "Reparo de Câmeras e Sensores.",
+    description: "Recuperação de foco, estabilização e nitidez original.",
+    // Coordinates: Mid Right
+    pos: '68% 44%',
+  },
+  {
+    title: "Exploded View Técnica.",
+    description: "Cada detalhe analisado minuciosamente antes da remontagem.",
+    // Coordinates: Mid Right Bottom-ish
+    pos: '100% 55%',
+  },
+  {
+    title: "Seu iPhone pronto.",
+    description: "Remontagem precisa e testes de qualidade rigorosos.",
+    // Coordinates: Bottom Center
+    pos: '50% 95%',
+  },
+];
 
 export function PhoneDisassemblyScroll() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,102 +65,110 @@ export function PhoneDisassemblyScroll() {
         scrollTrigger: {
           trigger: triggerRef.current,
           start: 'top top',
-          end: '+=300%',
+          end: '+=500%',
           pin: true,
           scrub: 1,
-          anticipatePin: 1,
         },
       });
 
-      // 1. Initial State: All stacked
-      // 2. Screen moves up and fades slightly
-      tl.to('#phone-screen', { y: '-120%', opacity: 0.3, scale: 1.05, duration: 2 }, 'step1')
-        .from('.text-step-1', { opacity: 0, x: -50, duration: 1 }, 'step1');
+      STAGES.forEach((_, index) => {
+        if (index === 0) return;
 
-      // 3. Camera module moves out
-      tl.to('#phone-camera', { x: '80%', y: '-40%', scale: 1.2, duration: 2 }, 'step2')
-        .to('.text-step-1', { opacity: 0, duration: 0.5 }, 'step2')
-        .from('.text-step-2', { opacity: 0, x: 50, duration: 1 }, 'step2');
-
-      // 4. Battery moves to the left
-      tl.to('#phone-battery', { x: '-100%', rotate: -5, duration: 2 }, 'step3')
-        .to('.text-step-2', { opacity: 0, duration: 0.5 }, 'step3')
-        .from('.text-step-3', { opacity: 0, y: 30, duration: 1 }, 'step3');
-
-      // 5. Logic Board moves to the right
-      tl.to('#phone-logic-board', { x: '100%', rotate: 5, duration: 2 }, 'step4')
-        .to('.text-step-3', { opacity: 0, duration: 0.5 }, 'step4')
-        .from('.text-step-4', { opacity: 0, x: 50, duration: 1 }, 'step4');
-
-      // 6. Connector module moves down
-      tl.to('#phone-connector', { y: '120%', opacity: 0.5, duration: 2 }, 'step5')
-        .to('.text-step-4', { opacity: 0, duration: 0.5 }, 'step5')
-        .from('.text-step-5', { opacity: 0, scale: 0.8, duration: 1 }, 'step5');
-        
-      // 7. Final view
-      tl.to('.text-step-5', { opacity: 0, duration: 0.5 }, 'final')
-        .from('.text-final', { opacity: 0, y: 50, duration: 1 }, 'final');
-
+        // Crossfade between frames
+        tl.to(`.frame-${index - 1}`, { opacity: 0, duration: 1 }, `step${index}`)
+          .to(`.frame-${index}`, { opacity: 1, duration: 1 }, `step${index}`)
+          // Text animation
+          .to(`.text-stage-${index - 1}`, { opacity: 0, y: -20, duration: 0.5 }, `step${index}`)
+          .fromTo(`.text-stage-${index}`, 
+            { opacity: 0, y: 20 }, 
+            { opacity: 1, y: 0, duration: 0.5 }, 
+            `step${index}+=0.5`
+          );
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={containerRef} className="relative bg-black overflow-hidden hidden md:block">
-      <div ref={triggerRef} className="h-screen w-full flex items-center justify-center relative px-4">
+    <section ref={containerRef} className="relative bg-black">
+      <div ref={triggerRef} className="h-screen w-full relative hidden md:flex items-center justify-center overflow-hidden">
         
-        {/* Texts - Absolute positions around the phone */}
-        <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center">
-          <div className="max-w-7xl w-full h-full relative">
-            
-            {/* Step 1: Screen */}
-            <div className="text-step-1 absolute left-10 top-1/4 max-w-xs opacity-0">
-              <h3 className="text-3xl font-bold text-apple-neon mb-2">Tela Retina</h3>
-              <p className="text-white/60">Troca com peça de alta fidelidade e calibração de cores original.</p>
-            </div>
+        {/* Background Glows */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-apple-blue/5 rounded-full blur-[150px]" />
+        </div>
 
-            {/* Step 2: Camera */}
-            <div className="text-step-2 absolute right-10 top-1/3 max-w-xs opacity-0">
-              <h3 className="text-3xl font-bold text-apple-neon mb-2">Lentes & Foco</h3>
-              <p className="text-white/60">Recuperação de foco e limpeza interna de sensores.</p>
-            </div>
+        {/* Frames Layer */}
+        <div className="relative w-full max-w-5xl aspect-video z-10">
+          {STAGES.map((stage, index) => (
+            <div
+              key={index}
+              className={`frame-${index} absolute inset-0 transition-opacity duration-300 pointer-events-none`}
+              style={{
+                backgroundImage: "url('/src/assets/phone-disassembly/phone-frames.png')",
+                backgroundSize: '320%', // Zoom in to see one frame at a time
+                backgroundPosition: stage.pos,
+                backgroundRepeat: 'no-repeat',
+                opacity: index === 0 ? 1 : 0,
+              }}
+            />
+          ))}
+        </div>
 
-            {/* Step 3: Battery */}
-            <div className="text-step-3 absolute left-10 bottom-1/4 max-w-xs opacity-0">
-              <h3 className="text-3xl font-bold text-apple-neon mb-2">Energia</h3>
-              <p className="text-white/60">Baterias de alta densidade com ciclo de vida prolongado.</p>
-            </div>
-
-            {/* Step 4: Logic Board */}
-            <div className="text-step-4 absolute right-10 bottom-1/3 max-w-xs opacity-0">
-              <h3 className="text-3xl font-bold text-apple-neon mb-2">Placa Lógica</h3>
-              <p className="text-white/60">Reparos em micro-soldagem e diagnósticos avançados de IC.</p>
-            </div>
-
-            {/* Step 5: Connector */}
-            <div className="text-step-5 absolute left-1/2 -translate-x-1/2 bottom-20 text-center max-w-md opacity-0">
-              <h3 className="text-3xl font-bold text-apple-neon mb-2">Conectividade</h3>
-              <p className="text-white/60">Restauração de carga rápida e transmissão de dados estável.</p>
-            </div>
-
-            {/* Final Text */}
-            <div className="text-final absolute inset-0 flex flex-col items-center justify-center text-center px-4 opacity-0">
-              <h2 className="text-5xl md:text-7xl font-bold text-white mb-6">Diagnóstico Claro.<br/>Reparo Preciso.</h2>
-              <p className="text-xl text-white/50 max-w-2xl">
-                Seu iPhone pronto para voltar à rotina com a performance que você espera.
-              </p>
-            </div>
-
+        {/* Text Overlay Layer */}
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-24 pointer-events-none">
+          <div className="max-w-2xl w-full text-center px-6">
+            {STAGES.map((stage, index) => (
+              <div 
+                key={index} 
+                className={`text-stage-${index} absolute bottom-24 left-1/2 -translate-x-1/2 w-full px-6 transition-all duration-500 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+              >
+                <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                  {stage.title}
+                </h3>
+                <p className="text-xl text-white/50 max-w-xl mx-auto">
+                  {stage.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* The Phone */}
-        <PhoneExplodedView />
+        {/* Progress Indicator */}
+        <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-30">
+           {STAGES.map((_, i) => (
+             <div key={i} className="w-1 h-8 bg-white/10 rounded-full overflow-hidden">
+                <div className={`h-full bg-apple-blue transition-all duration-300 opacity-0`} />
+             </div>
+           ))}
+        </div>
       </div>
 
-      {/* Mobile Fallback Placeholder for the same section space if needed, 
-          but usually we just hide this section on mobile and show simple cards */}
-    </div>
+      {/* Mobile Version - Responsive Cards */}
+      <div className="md:hidden bg-black py-24 px-6 border-t border-white/5">
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold mb-4 tracking-tight">O que fazemos por dentro.</h2>
+          <p className="text-white/40">Conheça nosso processo técnico detalhado.</p>
+        </div>
+        
+        <div className="space-y-12">
+          {STAGES.map((stage, index) => (
+            <div key={index} className="glass-card p-6 overflow-hidden">
+              <div 
+                className="w-full aspect-video rounded-2xl mb-8 bg-no-repeat bg-center"
+                style={{
+                  backgroundImage: "url('/src/assets/phone-disassembly/phone-frames.png')",
+                  backgroundSize: '320%',
+                  backgroundPosition: stage.pos,
+                }}
+              />
+              <h3 className="text-2xl font-bold text-white mb-3">{stage.title}</h3>
+              <p className="text-white/50 leading-relaxed">{stage.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
