@@ -9,7 +9,7 @@ import { globalLimiter } from './middlewares/rateLimiter';
 // Import Routes
 import authRoutes from './modules/auth/auth.routes';
 import siteConfigRoutes from './modules/siteConfig/siteConfig.routes';
-import quoteRoutes from './modules/quotes/quote.routes';
+import quoteRoutes, { admin as adminQuoteRoutes } from './modules/quotes/quote.routes';
 import availabilityRoutes from './modules/availability/availability.routes';
 import bookingRoutes from './modules/bookings/booking.routes';
 import googleCalendarRoutes from './modules/googleCalendar/googleCalendar.routes';
@@ -40,7 +40,7 @@ app.use('/api/feedbacks', feedbackRoutes.public);
 app.use('/api/admin/feedbacks', feedbackRoutes.admin);
 app.use('/api/admin/stats', statsRoutes);
 
-app.use('/api/admin/quotes', quoteRoutes.admin);
+app.use('/api/admin/quotes', adminQuoteRoutes);
 
 // Error Handling
 app.use(notFound);

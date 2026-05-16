@@ -18,8 +18,8 @@ export const createQuote = async (req: Request, res: Response) => {
     deviceModel: quote.deviceModel,
     problemType: quote.problemType,
     description: quote.description,
-    date: quote.preferredDate,
-    startTime: quote.preferredTime
+    date: quote.preferredDate || undefined,
+    startTime: quote.preferredTime || undefined
   });
 
   res.status(201).json(successResponse('Orçamento recebido com sucesso.', {
