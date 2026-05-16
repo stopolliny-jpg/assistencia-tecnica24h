@@ -1,4 +1,4 @@
-import React from 'react';
+// Unused import removed
 
 export function PhoneExplodedView() {
   return (
@@ -359,8 +359,8 @@ export function PhoneExplodedView() {
           
           {/* iOS Interface Simulation (Clean & Minimalist Apple Style) */}
           {/* Time & Date */}
-          <text x="75" y="125" fontFamily="system-ui, -apple-system, sans-serif" fontSize="42" fontWeight="200" fill="#ffffff" textAnchor="center">09:41</text>
-          <text x="75" y="150" fontFamily="system-ui, -apple-system, sans-serif" fontSize="11" fontWeight="bold" fill="#ffffff" fillOpacity="0.8" textAnchor="center">Sábado, 16 de Maio</text>
+          <text x="75" y="125" fontFamily="system-ui, -apple-system, sans-serif" fontSize="42" fontWeight="200" fill="#ffffff" textAnchor="middle">09:41</text>
+          <text x="75" y="150" fontFamily="system-ui, -apple-system, sans-serif" fontSize="11" fontWeight="bold" fill="#ffffff" fillOpacity="0.8" textAnchor="middle">Sábado, 16 de Maio</text>
 
           {/* Glowing Home Indicator at the bottom */}
           <rect x="135" y="765" width="130" height="5" rx="2.5" fill="#ffffff" fillOpacity="0.9" />
