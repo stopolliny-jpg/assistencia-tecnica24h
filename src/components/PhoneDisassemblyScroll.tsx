@@ -1,285 +1,116 @@
-import { useEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PhoneExplodedView } from './PhoneExplodedView';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const steps = [
-  {
-    icon: '📱',
-    title: 'Tela',
-    description: 'Troca com peça de qualidade e acabamento preciso. Vidro temperado original.',
-  },
-  {
-    icon: '🔋',
-    title: 'Bateria',
-    description: 'Autonomia restaurada com segurança. Células de alta densidade certificadas.',
-  },
-  {
-    icon: '⚡',
-    title: 'Conector',
-    description: 'Carregamento estável novamente. Conector Lightning/USB-C genuíno.',
-  },
-  {
-    icon: '🔬',
-    title: 'Placa Lógica',
-    description: 'Diagnóstico técnico profissional. Identificação microscópica de falhas.',
-  },
-  {
-    icon: '🔄',
-    title: 'Sistema',
-    description: 'Backup, atualização e configuração segura do iOS.',
-  },
-];
-
 export function PhoneDisassemblyScroll() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const phoneWrapperRef = useRef<HTMLDivElement>(null);
-  const stepsContainerRef = useRef<HTMLDivElement>(null);
-  const finalTextRef = useRef<HTMLDivElement>(null);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
-  const phoneBodyRef = useRef<SVGGElement>(null);
-  const screenRef = useRef<SVGGElement>(null);
-  const batteryRef = useRef<SVGGElement>(null);
-  const logicBoardRef = useRef<SVGGElement>(null);
-  const cameraRef = useRef<SVGGElement>(null);
-  const connectorRef = useRef<SVGGElement>(null);
-  const screwsRef = useRef<SVGGElement>(null);
-
-  const prefersReducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) return; // Mobile uses CSS-only version
-
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: triggerRef.current,
           start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.2,
-          pin: phoneWrapperRef.current,
-          pinSpacing: false,
+          end: '+=300%',
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
         },
       });
 
-      // Step 0 → 1: Screen separates to the left
-      tl.to(
-        screenRef.current,
-        { x: -90, rotateY: -15, opacity: 0.85, ease: 'none' },
-        0
-      );
-      tl.to(stepRefs.current[0], { opacity: 1, x: 0, ease: 'none' }, 0);
+      // 1. Initial State: All stacked
+      // 2. Screen moves up and fades slightly
+      tl.to('#phone-screen', { y: '-120%', opacity: 0.3, scale: 1.05, duration: 2 }, 'step1')
+        .from('.text-step-1', { opacity: 0, x: -50, duration: 1 }, 'step1');
 
-      // Step 1 → 2: Battery slides right
-      tl.to(
-        batteryRef.current,
-        { x: 90, rotateY: 15, opacity: 0.9, ease: 'none' },
-        0.2
-      );
-      tl.to(stepRefs.current[0], { opacity: 0, ease: 'none' }, 0.18);
-      tl.to(stepRefs.current[1], { opacity: 1, x: 0, ease: 'none' }, 0.22);
+      // 3. Camera module moves out
+      tl.to('#phone-camera', { x: '80%', y: '-40%', scale: 1.2, duration: 2 }, 'step2')
+        .to('.text-step-1', { opacity: 0, duration: 0.5 }, 'step2')
+        .from('.text-step-2', { opacity: 0, x: 50, duration: 1 }, 'step2');
 
-      // Step 2 → 3: Connector slides down
-      tl.to(
-        connectorRef.current,
-        { y: 60, opacity: 0.9, ease: 'none' },
-        0.38
-      );
-      tl.to(stepRefs.current[1], { opacity: 0, ease: 'none' }, 0.36);
-      tl.to(stepRefs.current[2], { opacity: 1, x: 0, ease: 'none' }, 0.4);
+      // 4. Battery moves to the left
+      tl.to('#phone-battery', { x: '-100%', rotate: -5, duration: 2 }, 'step3')
+        .to('.text-step-2', { opacity: 0, duration: 0.5 }, 'step3')
+        .from('.text-step-3', { opacity: 0, y: 30, duration: 1 }, 'step3');
 
-      // Step 3 → 4: Logic board rises
-      tl.to(
-        logicBoardRef.current,
-        { y: -50, opacity: 1, ease: 'none' },
-        0.54
-      );
-      tl.to(stepRefs.current[2], { opacity: 0, ease: 'none' }, 0.52);
-      tl.to(stepRefs.current[3], { opacity: 1, x: 0, ease: 'none' }, 0.56);
+      // 5. Logic Board moves to the right
+      tl.to('#phone-logic-board', { x: '100%', rotate: 5, duration: 2 }, 'step4')
+        .to('.text-step-3', { opacity: 0, duration: 0.5 }, 'step4')
+        .from('.text-step-4', { opacity: 0, x: 50, duration: 1 }, 'step4');
 
-      // Step 4 → 5: Camera separates up-right
-      tl.to(
-        cameraRef.current,
-        { x: 60, y: -50, opacity: 1, ease: 'none' },
-        0.7
-      );
-      tl.to(stepRefs.current[3], { opacity: 0, ease: 'none' }, 0.68);
-      tl.to(stepRefs.current[4], { opacity: 1, x: 0, ease: 'none' }, 0.72);
+      // 6. Connector module moves down
+      tl.to('#phone-connector', { y: '120%', opacity: 0.5, duration: 2 }, 'step5')
+        .to('.text-step-4', { opacity: 0, duration: 0.5 }, 'step5')
+        .from('.text-step-5', { opacity: 0, scale: 0.8, duration: 1 }, 'step5');
+        
+      // 7. Final view
+      tl.to('.text-step-5', { opacity: 0, duration: 0.5 }, 'final')
+        .from('.text-final', { opacity: 0, y: 50, duration: 1 }, 'final');
 
-      // Final: screws appear, everything settles
-      tl.to(
-        screwsRef.current,
-        { opacity: 1, ease: 'none' },
-        0.82
-      );
-      tl.to(stepRefs.current[4], { opacity: 0, ease: 'none' }, 0.84);
-      tl.to(finalTextRef.current, { opacity: 1, y: 0, ease: 'none' }, 0.88);
-
-      // Phone body subtle pulse at end
-      tl.to(
-        phoneBodyRef.current,
-        { filter: 'drop-shadow(0 0 20px rgba(0, 212, 255, 0.3))', ease: 'none' },
-        0.9
-      );
-    }, sectionRef);
+    }, containerRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion]);
-
-  // Initial state for animation targets
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) return;
-
-    // Set initial hidden states for step labels
-    stepRefs.current.forEach((el) => {
-      if (el) {
-        gsap.set(el, { opacity: 0, x: 30 });
-      }
-    });
-    if (finalTextRef.current) {
-      gsap.set(finalTextRef.current, { opacity: 0, y: 20 });
-    }
-  }, [prefersReducedMotion]);
+  }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="desmontagem"
-      className="relative bg-black"
-      style={{ height: '500vh' }}
-      aria-label="Animação de desmontagem do iPhone mostrando componentes"
-    >
-      {/* DESKTOP: sticky phone + animated text */}
-      <div
-        ref={phoneWrapperRef}
-        className="hidden md:flex sticky top-0 h-screen w-full items-center justify-center overflow-hidden"
-        style={{ zIndex: 10 }}
-      >
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-apple-blue/8 rounded-full blur-[80px]" />
-        </div>
-
-        {/* Section header */}
-        <div className="absolute top-12 left-0 right-0 text-center px-4">
-          <p className="text-apple-neon text-sm font-semibold tracking-widest uppercase mb-2">
-            Precisão técnica
-          </p>
-          <h2 className="text-3xl lg:text-4xl font-bold text-white">
-            Cada componente. Cada detalhe.
-          </h2>
-        </div>
-
-        {/* iPhone */}
-        <div className="relative flex items-center justify-center w-full max-w-sm h-[520px]">
-          <PhoneExplodedView
-            refs={{
-              phoneBody: phoneBodyRef,
-              screen: screenRef,
-              battery: batteryRef,
-              logicBoard: logicBoardRef,
-              camera: cameraRef,
-              connector: connectorRef,
-              screws: screwsRef,
-            }}
-          />
-        </div>
-
-        {/* Step labels (desktop) */}
-        <div
-          ref={stepsContainerRef}
-          className="absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 flex flex-col gap-6 max-w-xs"
-        >
-          {steps.map((step, i) => (
-            <div
-              key={step.title}
-              ref={(el) => { stepRefs.current[i] = el; }}
-              className="text-right"
-              style={{ opacity: 0 }}
-            >
-              <div className="inline-flex items-center gap-2 mb-1">
-                <span className="text-lg">{step.icon}</span>
-                <span className="text-apple-neon font-bold text-lg">{step.title}</span>
-              </div>
-              <p className="text-white/60 text-sm leading-relaxed">{step.description}</p>
+    <div ref={containerRef} className="relative bg-black overflow-hidden hidden md:block">
+      <div ref={triggerRef} className="h-screen w-full flex items-center justify-center relative px-4">
+        
+        {/* Texts - Absolute positions around the phone */}
+        <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center">
+          <div className="max-w-7xl w-full h-full relative">
+            
+            {/* Step 1: Screen */}
+            <div className="text-step-1 absolute left-10 top-1/4 max-w-xs opacity-0">
+              <h3 className="text-3xl font-bold text-apple-neon mb-2">Tela Retina</h3>
+              <p className="text-white/60">Troca com peça de alta fidelidade e calibração de cores original.</p>
             </div>
-          ))}
+
+            {/* Step 2: Camera */}
+            <div className="text-step-2 absolute right-10 top-1/3 max-w-xs opacity-0">
+              <h3 className="text-3xl font-bold text-apple-neon mb-2">Lentes & Foco</h3>
+              <p className="text-white/60">Recuperação de foco e limpeza interna de sensores.</p>
+            </div>
+
+            {/* Step 3: Battery */}
+            <div className="text-step-3 absolute left-10 bottom-1/4 max-w-xs opacity-0">
+              <h3 className="text-3xl font-bold text-apple-neon mb-2">Energia</h3>
+              <p className="text-white/60">Baterias de alta densidade com ciclo de vida prolongado.</p>
+            </div>
+
+            {/* Step 4: Logic Board */}
+            <div className="text-step-4 absolute right-10 bottom-1/3 max-w-xs opacity-0">
+              <h3 className="text-3xl font-bold text-apple-neon mb-2">Placa Lógica</h3>
+              <p className="text-white/60">Reparos em micro-soldagem e diagnósticos avançados de IC.</p>
+            </div>
+
+            {/* Step 5: Connector */}
+            <div className="text-step-5 absolute left-1/2 -translate-x-1/2 bottom-20 text-center max-w-md opacity-0">
+              <h3 className="text-3xl font-bold text-apple-neon mb-2">Conectividade</h3>
+              <p className="text-white/60">Restauração de carga rápida e transmissão de dados estável.</p>
+            </div>
+
+            {/* Final Text */}
+            <div className="text-final absolute inset-0 flex flex-col items-center justify-center text-center px-4 opacity-0">
+              <h2 className="text-5xl md:text-7xl font-bold text-white mb-6">Diagnóstico Claro.<br/>Reparo Preciso.</h2>
+              <p className="text-xl text-white/50 max-w-2xl">
+                Seu iPhone pronto para voltar à rotina com a performance que você espera.
+              </p>
+            </div>
+
+          </div>
         </div>
 
-        {/* Final text */}
-        <div
-          ref={finalTextRef}
-          className="absolute bottom-16 left-0 right-0 text-center px-8"
-          style={{ opacity: 0 }}
-        >
-          <p className="text-lg lg:text-xl text-white/80 font-medium max-w-lg mx-auto leading-relaxed">
-            Diagnóstico claro. Reparo preciso.{' '}
-            <span className="text-apple-neon font-semibold">
-              Seu iPhone pronto para voltar à rotina.
-            </span>
-          </p>
-        </div>
+        {/* The Phone */}
+        <PhoneExplodedView />
       </div>
 
-      {/* MOBILE: simple sequential cards */}
-      <div className="md:hidden py-20 px-4">
-        <div className="text-center mb-12">
-          <p className="text-apple-neon text-sm font-semibold tracking-widest uppercase mb-2">
-            Precisão técnica
-          </p>
-          <h2 className="text-3xl font-bold text-white">Cada componente. Cada detalhe.</h2>
-        </div>
-
-        {/* Simplified static iPhone for mobile */}
-        <div className="flex justify-center mb-12">
-          <PhoneExplodedView
-            refs={{
-              phoneBody: { current: null },
-              screen: { current: null },
-              battery: { current: null },
-              logicBoard: { current: null },
-              camera: { current: null },
-              connector: { current: null },
-              screws: { current: null },
-            }}
-          />
-        </div>
-
-        <div className="flex flex-col gap-4">
-          {steps.map((step, i) => (
-            <div
-              key={step.title}
-              className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10"
-              style={{
-                animationDelay: `${i * 0.1}s`,
-              }}
-            >
-              <span className="text-2xl flex-shrink-0">{step.icon}</span>
-              <div>
-                <h3 className="text-apple-neon font-bold mb-1">{step.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{step.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <p className="text-center text-white/70 font-medium mt-10 text-lg">
-          Diagnóstico claro. Reparo preciso.{' '}
-          <span className="text-apple-neon font-semibold">
-            Seu iPhone pronto para voltar à rotina.
-          </span>
-        </p>
-      </div>
-    </section>
+      {/* Mobile Fallback Placeholder for the same section space if needed, 
+          but usually we just hide this section on mobile and show simple cards */}
+    </div>
   );
 }

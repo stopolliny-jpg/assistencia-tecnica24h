@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from './ui/Input';
 import { Select } from './ui/Select';
 import { Textarea } from './ui/Textarea';
@@ -60,6 +60,11 @@ export function QuoteForm({ config }: QuoteFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { slots, loading: slotsLoading, error: slotsError, fetchAvailability } = useAvailability();
+
+  // Load availability for the default date on mount
+  useEffect(() => {
+    fetchAvailability(form.preferredDate);
+  }, []);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value;
@@ -137,18 +142,18 @@ export function QuoteForm({ config }: QuoteFormProps) {
   if (submitSuccess) {
     return (
       <section id="orcamento" className="py-24 lg:py-32 bg-black">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <div className="w-20 h-20 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        <div className="max-w-2xl mx-auto px-4 text-center animate-fade-in-up">
+          <div className="w-20 h-20 rounded-full bg-apple-neon/20 border border-apple-neon/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_40px_rgba(0,212,255,0.2)]">
+            <svg className="w-10 h-10 text-apple-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-2xl font-bold text-white mb-3">Solicitação enviada!</h3>
+          <h3 className="text-3xl font-bold text-white mb-3 text-gradient">Solicitação enviada!</h3>
           <p className="text-white/60 text-lg">
-            Solicitação enviada com sucesso. Redirecionando para o WhatsApp…
+            Sua solicitação foi recebida. Estamos te redirecionando para o WhatsApp para confirmar os detalhes...
           </p>
-          <div className="mt-6">
-            <LoadingSpinner size="md" className="mx-auto" />
+          <div className="mt-10">
+            <LoadingSpinner size="lg" className="mx-auto" />
           </div>
         </div>
       </section>
@@ -157,40 +162,27 @@ export function QuoteForm({ config }: QuoteFormProps) {
 
   return (
     <section id="orcamento" className="py-24 lg:py-32 bg-black relative">
-      {/* BG */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-apple-blue/5 rounded-full blur-[80px]" />
-      </div>
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-apple-blue/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <p className="text-apple-neon text-sm font-semibold tracking-widest uppercase mb-4">
-            Atendimento rápido
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-            Solicite seu orçamento agora.
-          </h2>
-          <p className="text-white/50 text-lg">
-            Escolha um horário disponível e fale direto com um especialista.
-          </p>
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
+        <div className="mb-16">
+          <h2 className="section-title">Solicite seu orçamento agora.</h2>
+          <p className="section-subtitle">Escolha um horário disponível e fale direto com um especialista.</p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 sm:p-8 lg:p-10 space-y-6"
-          noValidate
+          className="glass-card p-8 md:p-12 space-y-8"
         >
           {/* Personal info */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input
               label="Nome completo"
               placeholder="Seu nome"
               value={form.fullName}
               onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
               error={errors.fullName}
-              autoComplete="name"
             />
             <Input
               label="WhatsApp"
@@ -199,11 +191,10 @@ export function QuoteForm({ config }: QuoteFormProps) {
               onChange={(e) => setForm((f) => ({ ...f, whatsapp: e.target.value }))}
               error={errors.whatsapp}
               type="tel"
-              autoComplete="tel"
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Select
               label="Modelo do aparelho"
               options={IPHONE_MODELS}
@@ -220,37 +211,33 @@ export function QuoteForm({ config }: QuoteFormProps) {
             />
           </div>
 
-          {/* Date picker */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="preferred-date" className="text-sm font-medium text-white/70">
-              Data desejada
-            </label>
-            <input
-              id="preferred-date"
-              type="date"
-              value={form.preferredDate}
-              min={getTodayString()}
-              onChange={handleDateChange}
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-apple-blue/60 focus:border-apple-blue/60 transition-all duration-200"
-            />
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Date picker */}
+            <div className="md:col-span-1">
+              <label className="text-sm font-medium text-white/70 ml-1 mb-1.5 block">Data desejada</label>
+              <input
+                type="date"
+                value={form.preferredDate}
+                min={getTodayString()}
+                onChange={handleDateChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-apple-blue/60 focus:border-apple-blue/60 transition-all duration-200"
+              />
+            </div>
 
-          {/* Time slots */}
-          {form.preferredDate && (
-            <div>
-              <p className="text-sm font-medium text-white/70 mb-3">Horário disponível</p>
-
+            {/* Time slots */}
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium text-white/70 ml-1 mb-1.5 block">Horário disponível</label>
+              
               {slotsLoading ? (
-                <div className="flex items-center gap-3 py-4 text-white/50 text-sm">
-                  <LoadingSpinner size="sm" />
-                  Carregando horários…
+                <div className="h-[46px] flex items-center justify-center bg-white/5 rounded-xl border border-white/10">
+                   <LoadingSpinner size="sm" />
                 </div>
               ) : slotsError ? (
-                <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-300 text-sm">
+                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
                   {slotsError}
                 </div>
-              ) : slots.length === 0 && !slotsLoading ? (
-                <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-white/40 text-sm text-center">
+              ) : slots.length === 0 ? (
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/30 text-xs text-center">
                   Nenhum horário disponível para esta data.
                 </div>
               ) : (
@@ -263,13 +250,11 @@ export function QuoteForm({ config }: QuoteFormProps) {
                         setSelectedSlotId(slot.id);
                         setForm((f) => ({ ...f, preferredTime: slot.startTime }));
                       }}
-                      className={`
-                        py-2.5 px-3 rounded-xl text-sm font-medium transition-all duration-200 border
-                        ${selectedSlotId === slot.id
+                      className={`py-2 px-1 rounded-lg text-xs font-bold transition-all border ${
+                        selectedSlotId === slot.id
                           ? 'bg-apple-blue border-apple-blue text-white shadow-lg shadow-apple-blue/30'
-                          : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white hover:border-white/20'
-                        }
-                      `}
+                          : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20'
+                      }`}
                     >
                       {slot.startTime}
                     </button>
@@ -277,46 +262,32 @@ export function QuoteForm({ config }: QuoteFormProps) {
                 </div>
               )}
             </div>
-          )}
+          </div>
 
-          {/* Description */}
           <Textarea
             label="Descrição do problema (opcional)"
-            placeholder="Descreva o que está acontecendo com seu iPhone…"
+            placeholder="Descreva brevemente o que está acontecendo..."
             value={form.description}
             onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
           />
 
-          {/* Error */}
           {submitError && (
-            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
-              <p className="text-red-400 text-sm mb-3">{submitError}</p>
-              <a
-                href={buildWhatsAppUrl(config.whatsapp)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#25D366] hover:text-[#1fb855] transition-colors"
-              >
-                Chamar direto no WhatsApp →
-              </a>
+            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+              {submitError}
             </div>
           )}
 
-          {/* Submit */}
-          <div className="pt-2">
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              loading={submitting}
-              className="w-full"
-            >
-              {submitting ? 'Enviando…' : 'Solicitar orçamento'}
-            </Button>
-            <p className="text-center text-white/30 text-xs mt-3">
-              Você será redirecionado para o WhatsApp após o envio.
-            </p>
-          </div>
+          <Button
+            type="submit"
+            className="w-full"
+            loading={submitting}
+          >
+            {submitting ? 'Enviando...' : 'Solicitar Orçamento'}
+          </Button>
+          
+          <p className="text-center text-white/30 text-xs">
+            Ao clicar, você será redirecionado para o WhatsApp com todos os dados.
+          </p>
         </form>
       </div>
     </section>

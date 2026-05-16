@@ -5,6 +5,7 @@ export async function apiFetch<T>(
   options?: RequestInit
 ): Promise<T> {
   const url = `${API_URL}${endpoint}`;
+  
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -14,7 +15,8 @@ export async function apiFetch<T>(
   });
 
   if (!response.ok) {
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `API error: ${response.status} ${response.statusText}`);
   }
 
   return response.json();

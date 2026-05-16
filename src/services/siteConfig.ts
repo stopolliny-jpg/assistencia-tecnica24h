@@ -18,7 +18,8 @@ export async function getSiteConfig(): Promise<SiteConfig> {
       return response.data;
     }
     return FALLBACK_SITE_CONFIG;
-  } catch {
+  } catch (error) {
+    console.error('Error fetching site config:', error);
     return FALLBACK_SITE_CONFIG;
   }
 }

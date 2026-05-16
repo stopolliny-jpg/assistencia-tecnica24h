@@ -1,94 +1,61 @@
-import { MessageSquare, Calendar, ClipboardList, CheckCircle } from 'lucide-react';
+import React from 'react';
+import { Calendar, Clock, Smartphone, CheckCircle } from 'lucide-react';
 
 const steps = [
   {
-    icon: MessageSquare,
-    number: '01',
-    title: 'Você escolhe uma data ou chama no WhatsApp.',
-    description: 'Acesse o formulário abaixo, escolha a data que prefere ou nos chame diretamente pelo WhatsApp para atendimento imediato.',
-    color: 'text-blue-400',
-    bg: 'bg-blue-500/10',
-    border: 'border-blue-500/20',
-  },
-  {
+    title: 'Escolha um horário',
+    description: 'Selecione uma data ou fale conosco direto pelo WhatsApp.',
     icon: Calendar,
-    number: '02',
-    title: 'O sistema mostra os horários disponíveis.',
-    description: 'Veja em tempo real os horários disponíveis para a data escolhida e selecione o mais conveniente para você.',
-    color: 'text-apple-neon',
-    bg: 'bg-apple-neon/10',
-    border: 'border-apple-neon/20',
   },
   {
-    icon: ClipboardList,
-    number: '03',
-    title: 'Você preenche os dados do aparelho.',
-    description: 'Informe o modelo do iPhone, o problema que está enfrentando e seus dados de contato para agendarmos.',
-    color: 'text-purple-400',
-    bg: 'bg-purple-500/10',
-    border: 'border-purple-500/20',
+    title: 'Verificamos a agenda',
+    description: 'O sistema mostra os horários disponíveis em tempo real.',
+    icon: Clock,
   },
   {
+    title: 'Preencha os dados',
+    description: 'Informe o modelo e o problema para agilizar o diagnóstico.',
+    icon: Smartphone,
+  },
+  {
+    title: 'Reparo garantido',
+    description: 'Confirmamos o atendimento e devolvemos seu iPhone pronto.',
     icon: CheckCircle,
-    number: '04',
-    title: 'A equipe confirma e realiza o reparo com garantia.',
-    description: 'Nossos técnicos confirmam o agendamento, realizam o diagnóstico e entregam seu iPhone consertado com 90 dias de garantia.',
-    color: 'text-green-400',
-    bg: 'bg-green-500/10',
-    border: 'border-green-500/20',
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="como-funciona" className="py-24 lg:py-32 bg-[#050505] relative">
+    <section id="como-funciona" className="py-24 lg:py-32 bg-[#050505] relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-0 w-72 h-72 bg-apple-blue/5 rounded-full blur-3xl -translate-y-1/2" />
-        <div className="absolute top-1/2 right-0 w-72 h-72 bg-apple-neon/5 rounded-full blur-3xl -translate-y-1/2" />
-      </div>
+      <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent z-0" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-apple-neon text-sm font-semibold tracking-widest uppercase mb-4">
-            Processo simples
-          </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-            Como funciona?
-          </h2>
-          <p className="text-white/50 text-lg max-w-xl mx-auto">
-            Em 4 passos simples, seu iPhone está pronto para voltar à sua rotina.
-          </p>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="mb-20">
+          <h2 className="section-title text-gradient">Como funciona o atendimento.</h2>
+          <p className="section-subtitle">Praticidade e rapidez em todas as etapas do processo.</p>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Connecting line - desktop */}
-          <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-blue-500/30 via-apple-neon/30 to-green-500/30" />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-            {steps.map(({ icon: Icon, number, title, description, color, bg, border }, i) => (
-              <div key={number} className="relative flex flex-col items-center text-center lg:items-center">
-                {/* Step number circle */}
-                <div className={`relative z-10 w-14 h-14 rounded-2xl ${bg} border ${border} flex items-center justify-center mb-6 flex-shrink-0`}>
-                  <Icon size={22} className={color} strokeWidth={1.5} />
-                  <div className={`absolute -top-2 -right-2 w-5 h-5 rounded-full bg-black border ${border} flex items-center justify-center`}>
-                    <span className={`text-[9px] font-bold ${color}`}>{i + 1}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          {steps.map((step, idx) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.title} className="relative group text-center lg:text-left">
+                <div className="inline-flex w-16 h-16 rounded-3xl bg-white/5 border border-white/10 items-center justify-center text-apple-neon mb-6 relative z-10 group-hover:shadow-[0_0_30px_rgba(0,212,255,0.2)] transition-all">
+                  <Icon size={32} />
+                  <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-apple-blue text-white text-xs font-bold flex items-center justify-center border-4 border-[#050505]">
+                    {idx + 1}
                   </div>
                 </div>
-
-                {/* Number label */}
-                <span className={`text-4xl font-black ${color} opacity-20 mb-3 font-mono`}>
-                  {number}
-                </span>
-
-                {/* Content */}
-                <h3 className="text-white font-semibold text-base mb-3 leading-snug">{title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{description}</p>
+                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-apple-neon transition-colors">{step.title}</h3>
+                <p className="text-white/40 leading-relaxed">{step.description}</p>
+                
+                {idx < steps.length - 1 && (
+                  <div className="hidden lg:block absolute top-8 left-[calc(64px+1.5rem)] w-[calc(100%-64px-3rem)] h-px bg-white/10" />
+                )}
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

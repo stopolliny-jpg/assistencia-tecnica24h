@@ -7,10 +7,12 @@ export function useSiteConfig() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getSiteConfig().then((data) => {
+    async function load() {
+      const data = await getSiteConfig();
       setConfig(data);
       setLoading(false);
-    });
+    }
+    load();
   }, []);
 
   return { config, loading };

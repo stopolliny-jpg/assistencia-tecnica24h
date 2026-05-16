@@ -5,8 +5,10 @@ export async function getAvailabilityByDate(date: string): Promise<AvailabilityD
   const response = await apiFetch<ApiResponse<AvailabilityData>>(
     `/public/availability?date=${date}`
   );
+  
   if (response.success && response.data) {
     return response.data;
   }
-  throw new Error('Não foi possível carregar os horários.');
+  
+  throw new Error(response.message || 'Não foi possível carregar os horários.');
 }

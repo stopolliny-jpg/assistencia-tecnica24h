@@ -1,3 +1,4 @@
+import React from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { PhoneDisassemblyScroll } from './components/PhoneDisassemblyScroll';
@@ -9,26 +10,42 @@ import { QuoteForm } from './components/QuoteForm';
 import { Footer } from './components/Footer';
 import { FloatingWhatsAppButton } from './components/FloatingWhatsAppButton';
 import { useSiteConfig } from './hooks/useSiteConfig';
+import { LoadingSpinner } from './components/ui/LoadingSpinner';
 
-export default function App() {
-  const { config } = useSiteConfig();
+function App() {
+  const { config, loading } = useSiteConfig();
+
+  if (loading) {
+    return (
+      <div className="h-screen w-full bg-black flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+    <main className="bg-black min-h-screen text-white selection:bg-apple-blue/30">
       <Header config={config} />
-
-      <main>
-        <Hero config={config} />
-        <PhoneDisassemblyScroll />
-        <ServicesSection />
-        <HowItWorks />
-        <FeedbackSection />
-        <AboutSection config={config} />
-        <QuoteForm config={config} />
-      </main>
-
+      
+      <Hero config={config} />
+      
+      <PhoneDisassemblyScroll />
+      
+      <ServicesSection />
+      
+      <HowItWorks />
+      
+      <FeedbackSection />
+      
+      <AboutSection config={config} />
+      
+      <QuoteForm config={config} />
+      
       <Footer config={config} />
-      <FloatingWhatsAppButton config={config} />
-    </div>
+      
+      <FloatingWhatsAppButton whatsapp={config.whatsapp} />
+    </main>
   );
 }
+
+export default App;

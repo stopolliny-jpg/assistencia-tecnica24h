@@ -1,8 +1,5 @@
-export function buildWhatsAppUrl(phone: string, message?: string): string {
-  const encodedMessage = message ? encodeURIComponent(message) : '';
-  return `https://wa.me/${phone}${encodedMessage ? `?text=${encodedMessage}` : ''}`;
-}
-
-export function formatWhatsApp(raw: string): string {
-  return raw.replace(/\D/g, '');
+export function buildWhatsAppUrl(phone: string, text?: string): string {
+  const baseUrl = `https://wa.me/${phone.replace(/\D/g, '')}`;
+  if (!text) return baseUrl;
+  return `${baseUrl}?text=${encodeURIComponent(text)}`;
 }
